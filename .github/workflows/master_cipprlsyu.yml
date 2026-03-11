@@ -15,21 +15,11 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
-
+    
     steps:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@v4
       
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_E5AA03916F23460984EA9B3701A5951A }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_29EADFD4A7C34DD6A1C4B55F7DE0214F }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B649CA127E994C36A27260E0A271C8D6 }}
-
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
         id: fa
@@ -37,4 +27,4 @@ jobs:
           app-name: 'cipprlsyu'
           slot-name: 'Production'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-          
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E091537A6E3F4A77AA5F5D72AF442199 }}
